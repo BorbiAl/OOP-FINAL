@@ -11,6 +11,7 @@ public:
                      double weight, int sets, int reps);
     void perform() const override;
     std::string getType() const override;
+    Exercise* clone() const override;
     double getWeight() const;
     int getSets() const;
     int getReps() const;

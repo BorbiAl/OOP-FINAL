@@ -10,8 +10,8 @@ private:
 public:
     WorkoutPlan(const std::string& name);
     ~WorkoutPlan();
-    WorkoutPlan(const WorkoutPlan&) = delete;
-    WorkoutPlan& operator=(const WorkoutPlan&) = delete;
+    WorkoutPlan(const WorkoutPlan& other);
+    WorkoutPlan& operator=(const WorkoutPlan& other);
     WorkoutPlan(WorkoutPlan&& other) noexcept;
 
     void addExercise(Exercise* exercise);

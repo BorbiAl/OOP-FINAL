@@ -10,6 +10,7 @@ public:
                    int durationMinutes, double distanceKm = 0.0);
     void perform() const override;
     std::string getType() const override;
+    Exercise* clone() const override;
     int getDuration() const;
     double getDistance() const;
     std::string toString() const override;

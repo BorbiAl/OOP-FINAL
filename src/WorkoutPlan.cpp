@@ -7,6 +7,22 @@ WorkoutPlan::~WorkoutPlan() {
     for (auto* e : exercises) delete e;
 }
 
+WorkoutPlan::WorkoutPlan(const WorkoutPlan& other) : name(other.name) {
+    for (const auto* e : other.exercises)
+        exercises.push_back(e->clone());
+}
+
+WorkoutPlan& WorkoutPlan::operator=(const WorkoutPlan& other) {
+    if (this == &other)
+        return *this;
+    for (auto* e : exercises) delete e;
+    exercises.clear();
+    name = other.name;
+    for (const auto* e : other.exercises)
+        exercises.push_back(e->clone());
+    return *this;
+}
+
 WorkoutPlan::WorkoutPlan(WorkoutPlan&& other) noexcept
     : name(std::move(other.name)), exercises(std::move(other.exercises)) {
     other.exercises.clear();

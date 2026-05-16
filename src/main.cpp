@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <limits>
+#include <stdexcept>
 #include "User.h"
 #include "StrengthExercise.h"
 #include "CardioExercise.h"
@@ -17,8 +18,6 @@ static std::string getDate() {
     return d;
 }
 
-// ── 1. Create workout plan ───────────────────────────────────────────────────
-
 static void menuCreatePlan(User& user) {
     clearInput();
     std::string planName;
@@ -28,7 +27,6 @@ static void menuCreatePlan(User& user) {
     std::cout << "Plan '" << planName << "' created.\n";
 }
 
-// ── 2. Add exercise to plan ──────────────────────────────────────────────────
 
 static void menuAddExercise(User& user) {
     auto& plans = user.getPlans();
@@ -64,8 +62,6 @@ static void menuAddExercise(User& user) {
     std::cout << "Exercise added.\n";
 }
 
-// ── 3. Start session + log sets ─────────────────────────────────────────────
-
 static void menuStartSession(User& user) {
     auto& plans = user.getPlans();
     if (plans.empty()) { std::cout << "No plans available.\n"; return; }
@@ -91,13 +87,16 @@ static void menuStartSession(User& user) {
         std::cout << "Exercise name: "; std::getline(std::cin, exName);
         std::cout << "Weight (kg): ";   std::cin >> weight;
         std::cout << "Reps: ";          std::cin >> reps;
-        user.addSetToLastSession(exName, weight, reps);
-        std::cout << "Set logged.\nLog another set? (y/n): "; std::cin >> more;
+        try {
+            user.addSetToLastSession(exName, weight, reps);
+            std::cout << "Set logged.\n";
+        } catch (const std::runtime_error& e) {
+            std::cout << "Error: " << e.what() << "\n";
+        }
+        std::cout << "Log another set? (y/n): "; std::cin >> more;
     }
     std::cout << "Session saved.\n";
 }
-
-// ── Main menu ────────────────────────────────────────────────────────────────
 
 static void printMenu() {
     std::cout << "\n====== FITNESS TRACKER ======\n"
@@ -121,14 +120,18 @@ int main() {
     while (choice != 0) {
         printMenu();
         std::cin >> choice;
-        switch (choice) {
-            case 1: menuCreatePlan(user);   break;
-            case 2: menuAddExercise(user);  break;
-            case 3: user.displayPlans();    break;
-            case 4: menuStartSession(user); break;
-            case 5: user.displayHistory();  break;
-            case 0: std::cout << "Goodbye!\n"; break;
-            default: std::cout << "Invalid option.\n";
+        try {
+            switch (choice) {
+                case 1: menuCreatePlan(user);   break;
+                case 2: menuAddExercise(user);  break;
+                case 3: user.displayPlans();    break;
+                case 4: menuStartSession(user); break;
+                case 5: user.displayHistory();  break;
+                case 0: std::cout << "Goodbye!\n"; break;
+                default: std::cout << "Invalid option.\n";
+            }
+        } catch (const std::exception& e) {
+            std::cout << "Error: " << e.what() << "\n";
         }
     }
     return 0;
