@@ -5,6 +5,7 @@
 #include "User.h"
 #include "StrengthExercise.h"
 #include "CardioExercise.h"
+#include "ProgressAnalyzer.h"
 
 static void clearInput() {
     std::cin.clear();
@@ -98,6 +99,16 @@ static void menuStartSession(User& user) {
     std::cout << "Session saved.\n";
 }
 
+static void menuAnalyzeProgress(const User& user) {
+    if (user.getHistory().empty()) { std::cout << "No sessions recorded.\n"; return; }
+    clearInput();
+    std::string exName;
+    std::cout << "Exercise name to analyze: ";
+    std::getline(std::cin, exName);
+    ProgressAnalyzer analyzer;
+    analyzer.analyzeProgress(user.getHistory(), exName);
+}
+
 static void printMenu() {
     std::cout << "\n====== FITNESS TRACKER ======\n"
               << " 1. Create workout plan\n"
@@ -106,6 +117,7 @@ static void printMenu() {
               << " 4. Start training session\n"
               << " 5. View session history\n"
               << " 6. View personal records\n"
+              << " 7. Analyze exercise progress\n"
               << " 0. Exit\n"
               << "Choice: ";
 }
@@ -128,7 +140,8 @@ int main() {
                 case 3: user.displayPlans();    break;
                 case 4: menuStartSession(user); break;
                 case 5: user.displayHistory();         break;
-                case 6: user.displayPersonalRecords(); break;
+                case 6: user.displayPersonalRecords();  break;
+                case 7: menuAnalyzeProgress(user);      break;
                 case 0: std::cout << "Goodbye!\n"; break;
                 default: std::cout << "Invalid option.\n";
             }
