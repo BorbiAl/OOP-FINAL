@@ -121,6 +121,17 @@ static void menuDetectPlateau(const User& user) {
     detector.detectPlateau(user.getHistory(), exName);
 }
 
+static void menuAddGoal(User& user) {
+    clearInput();
+    std::string desc, exName;
+    double target;
+    std::cout << "Goal description: ";  std::getline(std::cin, desc);
+    std::cout << "Exercise name: ";     std::getline(std::cin, exName);
+    std::cout << "Target volume (weight x reps, e.g. 100): "; std::cin >> target;
+    user.addGoal(desc, exName, target);
+    std::cout << "Goal added.\n";
+}
+
 static void menuRecommend(const User& user) {
     if (user.getHistory().empty()) { std::cout << "No sessions recorded.\n"; return; }
     clearInput();
@@ -142,6 +153,8 @@ static void printMenu() {
               << " 7. Analyze exercise progress\n"
               << " 8. Check for plateau\n"
               << " 9. Get recommendations\n"
+              << "10. Add goal\n"
+              << "11. View goals\n"
               << " 0. Exit\n"
               << "Choice: ";
 }
@@ -167,7 +180,9 @@ int main() {
                 case 6: user.displayPersonalRecords();  break;
                 case 7: menuAnalyzeProgress(user);      break;
                 case 8: menuDetectPlateau(user);  break;
-                case 9: menuRecommend(user);      break;
+                case 9:  menuRecommend(user);       break;
+                case 10: menuAddGoal(user);         break;
+                case 11: user.displayGoals();       break;
                 case 0: std::cout << "Goodbye!\n"; break;
                 default: std::cout << "Invalid option.\n";
             }

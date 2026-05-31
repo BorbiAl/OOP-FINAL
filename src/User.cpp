@@ -17,8 +17,10 @@ void User::startSession(const std::string& planName, const std::string& date) {
 void User::addSetToLastSession(const std::string& exerciseName, double weight, int reps) {
     if (sessionHistory.empty()) throw std::runtime_error("No active session.");
     sessionHistory.back().addSet(exerciseName, weight, reps);
-    if (updatePersonalRecord(exerciseName, weight, reps))
+    if (updatePersonalRecord(exerciseName, weight, reps)) {
         std::cout << "  ** New personal record for " << exerciseName << "! **\n";
+        checkGoals();
+    }
 }
 
 const std::string& User::getName() const { return name; }
@@ -47,6 +49,28 @@ void User::displayPersonalRecords() const {
     std::cout << "=== Personal Records ===\n";
     for (const auto& [ex, vol] : personalRecords)
         std::cout << "  " << ex << ": best volume " << std::fixed << std::setprecision(1) << vol << " kg\n";
+}
+
+void User::addGoal(const std::string& description, const std::string& exerciseName, double targetVolume) {
+    goals.emplace_back(description, exerciseName, targetVolume);
+}
+
+void User::checkGoals() {
+    for (auto& goal : goals) {
+        if (goal.isAchieved()) continue;
+        auto it = personalRecords.find(goal.getExerciseName());
+        if (it != personalRecords.end() && it->second >= goal.getTargetValue()) {
+            goal.markAchieved();
+            std::cout << "  ** Goal achieved: " << goal.getDescription() << " **\n";
+        }
+    }
+}
+
+void User::displayGoals() const {
+    if (goals.empty()) { std::cout << "No goals set.\n"; return; }
+    std::cout << "=== Goals ===\n";
+    for (const auto& g : goals)
+        std::cout << "  " << g.toString() << "\n";
 }
 
 void User::displayHistory() const {
