@@ -7,6 +7,7 @@
 #include "CardioExercise.h"
 #include "ProgressAnalyzer.h"
 #include "PlateauDetector.h"
+#include "RecommendationEngine.h"
 
 static void clearInput() {
     std::cin.clear();
@@ -120,6 +121,16 @@ static void menuDetectPlateau(const User& user) {
     detector.detectPlateau(user.getHistory(), exName);
 }
 
+static void menuRecommend(const User& user) {
+    if (user.getHistory().empty()) { std::cout << "No sessions recorded.\n"; return; }
+    clearInput();
+    std::string exName;
+    std::cout << "Exercise name: ";
+    std::getline(std::cin, exName);
+    RecommendationEngine engine;
+    engine.generateRecommendation(user.getHistory(), exName);
+}
+
 static void printMenu() {
     std::cout << "\n====== FITNESS TRACKER ======\n"
               << " 1. Create workout plan\n"
@@ -130,6 +141,7 @@ static void printMenu() {
               << " 6. View personal records\n"
               << " 7. Analyze exercise progress\n"
               << " 8. Check for plateau\n"
+              << " 9. Get recommendations\n"
               << " 0. Exit\n"
               << "Choice: ";
 }
@@ -154,7 +166,8 @@ int main() {
                 case 5: user.displayHistory();         break;
                 case 6: user.displayPersonalRecords();  break;
                 case 7: menuAnalyzeProgress(user);      break;
-                case 8: menuDetectPlateau(user);         break;
+                case 8: menuDetectPlateau(user);  break;
+                case 9: menuRecommend(user);      break;
                 case 0: std::cout << "Goodbye!\n"; break;
                 default: std::cout << "Invalid option.\n";
             }
