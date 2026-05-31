@@ -4,6 +4,7 @@
 #include <map>
 #include "WorkoutPlan.h"
 #include "WorkoutSession.h"
+#include "Goal.h"
 
 class User {
 private:
@@ -11,6 +12,7 @@ private:
     std::vector<WorkoutPlan> workoutPlans;
     std::vector<WorkoutSession> sessionHistory;
     std::map<std::string, double> personalRecords; // exercise -> best volume per set
+    std::vector<Goal> goals;
 public:
     explicit User(const std::string& name);
 
@@ -26,6 +28,11 @@ public:
 
     bool updatePersonalRecord(const std::string& exerciseName, double weight, int reps);
     void displayPersonalRecords() const;
+
+    void addGoal(const std::string& description, const std::string& exerciseName, double targetVolume);
+    void checkGoals();
+    void displayGoals() const;
+
     void displayHistory() const;
     void displayPlans() const;
 };
