@@ -167,11 +167,14 @@ static void printMenu() {
               << "Choice: ";
 }
 
+static const std::string DATA_FILE = "data.txt";
+
 int main() {
     std::string userName;
     std::cout << "Enter your name: ";
     std::getline(std::cin, userName);
     User user(userName);
+    user.loadFromFile(DATA_FILE);
     std::cout << "Welcome, " << user.getName() << "!\n";
 
     int choice = -1;
@@ -192,7 +195,10 @@ int main() {
                 case 10: menuAddGoal(user);         break;
                 case 11: user.displayGoals();       break;
                 case 12: menuLoadTracker(user);     break;
-                case 0: std::cout << "Goodbye!\n"; break;
+                case 0:
+                    user.saveToFile(DATA_FILE);
+                    std::cout << "Goodbye!\n";
+                    break;
                 default: std::cout << "Invalid option.\n";
             }
         } catch (const std::exception& e) {

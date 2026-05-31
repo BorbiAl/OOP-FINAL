@@ -5,6 +5,7 @@
 #include "WorkoutPlan.h"
 #include "WorkoutSession.h"
 #include "Goal.h"
+#include <fstream>
 
 class User {
 private:
@@ -35,4 +36,7 @@ public:
 
     void displayHistory() const;
     void displayPlans() const;
+
+    void saveToFile(const std::string& filename) const;
+    void loadFromFile(const std::string& filename);
 };
