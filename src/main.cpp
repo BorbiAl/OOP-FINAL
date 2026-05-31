@@ -105,6 +105,7 @@ static void printMenu() {
               << " 3. View all plans\n"
               << " 4. Start training session\n"
               << " 5. View session history\n"
+              << " 6. View personal records\n"
               << " 0. Exit\n"
               << "Choice: ";
 }
@@ -126,7 +127,8 @@ int main() {
                 case 2: menuAddExercise(user);  break;
                 case 3: user.displayPlans();    break;
                 case 4: menuStartSession(user); break;
-                case 5: user.displayHistory();  break;
+                case 5: user.displayHistory();         break;
+                case 6: user.displayPersonalRecords(); break;
                 case 0: std::cout << "Goodbye!\n"; break;
                 default: std::cout << "Invalid option.\n";
             }
