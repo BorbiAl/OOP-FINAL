@@ -8,6 +8,7 @@
 #include "ProgressAnalyzer.h"
 #include "PlateauDetector.h"
 #include "RecommendationEngine.h"
+#include "LoadTracker.h"
 
 static void clearInput() {
     std::cin.clear();
@@ -142,6 +143,12 @@ static void menuRecommend(const User& user) {
     engine.generateRecommendation(user.getHistory(), exName);
 }
 
+static void menuLoadTracker(const User& user) {
+    if (user.getHistory().empty()) { std::cout << "No sessions recorded.\n"; return; }
+    LoadTracker tracker;
+    tracker.analyzeLoad(user.getHistory());
+}
+
 static void printMenu() {
     std::cout << "\n====== FITNESS TRACKER ======\n"
               << " 1. Create workout plan\n"
@@ -155,6 +162,7 @@ static void printMenu() {
               << " 9. Get recommendations\n"
               << "10. Add goal\n"
               << "11. View goals\n"
+              << "12. Analyze training load\n"
               << " 0. Exit\n"
               << "Choice: ";
 }
@@ -183,6 +191,7 @@ int main() {
                 case 9:  menuRecommend(user);       break;
                 case 10: menuAddGoal(user);         break;
                 case 11: user.displayGoals();       break;
+                case 12: menuLoadTracker(user);     break;
                 case 0: std::cout << "Goodbye!\n"; break;
                 default: std::cout << "Invalid option.\n";
             }
