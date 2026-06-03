@@ -1,11 +1,12 @@
 #include "ProgressAnalyzer.h"
 #include <iostream>
 #include <iomanip>
+using namespace std;
 
-void ProgressAnalyzer::analyzeProgress(const std::vector<WorkoutSession>& history,
-                                        const std::string& exerciseName) const {
-    struct Entry { std::string date; double volume; };
-    std::vector<Entry> entries;
+void ProgressAnalyzer::analyzeProgress(const vector<WorkoutSession>& history,
+                                        const string& exerciseName) const {
+    struct Entry { string date; double volume; };
+    vector<Entry> entries;
 
     for (const auto& session : history) {
         double vol = 0;
@@ -18,25 +19,25 @@ void ProgressAnalyzer::analyzeProgress(const std::vector<WorkoutSession>& histor
     }
 
     if (entries.empty()) {
-        std::cout << "No data for exercise '" << exerciseName << "'.\n";
+        cout << "No data for exercise '" << exerciseName << "'.\n";
         return;
     }
 
-    std::cout << "=== Progress: " << exerciseName << " ===\n";
+    cout << "=== Progress: " << exerciseName << " ===\n";
     for (int i = 0; i < (int)entries.size(); ++i) {
-        std::cout << "  [" << entries[i].date << "] volume: "
-                  << std::fixed << std::setprecision(1) << entries[i].volume;
+        cout << "  [" << entries[i].date << "] volume: "
+             << fixed << setprecision(1) << entries[i].volume;
         if (i > 0) {
             double diff = entries[i].volume - entries[i - 1].volume;
-            if (diff > 0)      std::cout << "  (+) improved by " << diff;
-            else if (diff < 0) std::cout << "  (-) dropped by " << -diff;
-            else               std::cout << "  (=) no change";
+            if (diff > 0)      cout << "  (+) improved by " << diff;
+            else if (diff < 0) cout << "  (-) dropped by " << -diff;
+            else               cout << "  (=) no change";
         }
-        std::cout << "\n";
+        cout << "\n";
     }
 
     if (entries.size() > 1) {
         double overall = entries.back().volume - entries.front().volume;
-        std::cout << "  Overall change: " << (overall >= 0 ? "+" : "") << overall << " kg\n";
+        cout << "  Overall change: " << (overall >= 0 ? "+" : "") << overall << " kg\n";
     }
 }

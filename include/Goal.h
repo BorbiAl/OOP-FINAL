@@ -5,7 +5,7 @@ class Goal {
 private:
     std::string description;
     std::string exerciseName;
-    double targetValue; // target volume (weight * reps) per set
+    double targetValue;
     bool achieved;
 public:
     Goal(const std::string& description, const std::string& exerciseName, double targetValue);

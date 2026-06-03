@@ -12,7 +12,7 @@ private:
     std::string name;
     std::vector<WorkoutPlan> workoutPlans;
     std::vector<WorkoutSession> sessionHistory;
-    std::map<std::string, double> personalRecords; // exercise -> best volume per set
+    std::map<std::string, double> personalRecords;
     std::vector<Goal> goals;
 public:
     explicit User(const std::string& name);

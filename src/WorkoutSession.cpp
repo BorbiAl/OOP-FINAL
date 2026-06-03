@@ -1,16 +1,17 @@
 #include "WorkoutSession.h"
 #include <iostream>
+using namespace std;
 
-WorkoutSession::WorkoutSession(const std::string& date, const std::string& planName)
+WorkoutSession::WorkoutSession(const string& date, const string& planName)
     : date(date), planName(planName) {}
 
-void WorkoutSession::addSet(const std::string& exerciseName, double weight, int reps) {
+void WorkoutSession::addSet(const string& exerciseName, double weight, int reps) {
     logs.emplace_back(exerciseName, weight, reps);
 }
 
-const std::string& WorkoutSession::getDate() const { return date; }
-const std::string& WorkoutSession::getPlanName() const { return planName; }
-const std::vector<SetLog>& WorkoutSession::getLogs() const { return logs; }
+const string& WorkoutSession::getDate() const { return date; }
+const string& WorkoutSession::getPlanName() const { return planName; }
+const vector<SetLog>& WorkoutSession::getLogs() const { return logs; }
 
 double WorkoutSession::totalVolume() const {
     double total = 0;
@@ -19,9 +20,8 @@ double WorkoutSession::totalVolume() const {
 }
 
 void WorkoutSession::display() const {
-    std::cout << "Session [" << date << "] - Plan: " << planName << "\n";
-    for (const auto& log : logs) {
-        std::cout << "  " << log.toString() << "  (vol: " << log.volume() << ")\n";
-    }
-    std::cout << "  Total volume: " << totalVolume() << " kg\n";
+    cout << "Session [" << date << "] - Plan: " << planName << "\n";
+    for (const auto& log : logs)
+        cout << "  " << log.toString() << "  (vol: " << log.volume() << ")\n";
+    cout << "  Total volume: " << totalVolume() << " kg\n";
 }

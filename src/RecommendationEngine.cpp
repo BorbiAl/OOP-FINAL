@@ -1,14 +1,14 @@
 #include "RecommendationEngine.h"
 #include <iostream>
 #include <iomanip>
+using namespace std;
 
 void RecommendationEngine::generateRecommendation(
-        const std::vector<WorkoutSession>& history,
-        const std::string& exerciseName) const {
+        const vector<WorkoutSession>& history,
+        const string& exerciseName) const {
 
-    // Collect per-session max weight and total volume
     struct Entry { double maxWeight; double volume; };
-    std::vector<Entry> entries;
+    vector<Entry> entries;
 
     for (const auto& session : history) {
         double maxW = 0, vol = 0;
@@ -21,25 +21,24 @@ void RecommendationEngine::generateRecommendation(
         if (vol > 0) entries.push_back({maxW, vol});
     }
 
-    std::cout << "=== Recommendations: " << exerciseName << " ===\n";
+    cout << "=== Recommendations: " << exerciseName << " ===\n";
 
     if (entries.empty()) {
-        std::cout << "  No data found. Start logging this exercise first.\n";
+        cout << "  No data found. Start logging this exercise first.\n";
         return;
     }
 
     if (entries.size() == 1) {
-        std::cout << "  Only one session recorded. Keep going and check back later.\n";
+        cout << "  Only one session recorded. Keep going and check back later.\n";
         return;
     }
 
-    double lastVol  = entries.back().volume;
-    double prevVol  = entries[entries.size() - 2].volume;
-    double lastW    = entries.back().maxWeight;
-    double change   = lastVol - prevVol;
+    double lastVol   = entries.back().volume;
+    double prevVol   = entries[entries.size() - 2].volume;
+    double lastW     = entries.back().maxWeight;
+    double change    = lastVol - prevVol;
     double changePct = prevVol > 0 ? (change / prevVol) * 100.0 : 0;
 
-    // Check last 3 sessions for plateau
     bool plateau = entries.size() >= 3;
     if (plateau) {
         int n = (int)entries.size();
@@ -48,21 +47,21 @@ void RecommendationEngine::generateRecommendation(
     }
 
     if (plateau) {
-        std::cout << "  Plateau detected over the last 3 sessions.\n";
-        std::cout << "  -> Try reducing weight by 10% and increasing reps.\n";
-        std::cout << "  -> Or substitute this exercise with a variation.\n";
+        cout << "  Plateau detected over the last 3 sessions.\n";
+        cout << "  -> Try reducing weight by 10% and increasing reps.\n";
+        cout << "  -> Or substitute this exercise with a variation.\n";
     } else if (changePct > 10.0) {
-        std::cout << "  Great progress! Volume up " << std::fixed << std::setprecision(1)
-                  << changePct << "% vs last session.\n";
-        std::cout << "  -> Consider adding " << lastW * 0.05 << " kg next session.\n";
+        cout << "  Great progress! Volume up " << fixed << setprecision(1)
+             << changePct << "% vs last session.\n";
+        cout << "  -> Consider adding " << lastW * 0.05 << " kg next session.\n";
     } else if (change < 0) {
-        std::cout << "  Volume dropped " << std::fixed << std::setprecision(1)
-                  << -changePct << "% vs last session.\n";
-        std::cout << "  -> Ensure adequate rest and nutrition before next session.\n";
-        std::cout << "  -> Stick with current weight (" << lastW << " kg) until volume recovers.\n";
+        cout << "  Volume dropped " << fixed << setprecision(1)
+             << -changePct << "% vs last session.\n";
+        cout << "  -> Ensure adequate rest and nutrition before next session.\n";
+        cout << "  -> Stick with current weight (" << lastW << " kg) until volume recovers.\n";
     } else {
-        std::cout << "  Steady progress. Volume change: " << std::showpos << std::fixed
-                  << std::setprecision(1) << changePct << "%\n" << std::noshowpos;
-        std::cout << "  -> Maintain current weight and aim for one more rep per set.\n";
+        cout << "  Steady progress. Volume change: " << showpos << fixed
+             << setprecision(1) << changePct << "%\n" << noshowpos;
+        cout << "  -> Maintain current weight and aim for one more rep per set.\n";
     }
 }
